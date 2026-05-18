@@ -1,10 +1,11 @@
-package internal
+package game
 
 import (
 	"fmt"
 	"image"
 	"image/color"
-	"testgame/internal/entities"
+	"testgame/internal/constant"
+	"testgame/internal/entity"
 	"testgame/internal/mapper"
 	"testgame/internal/spritesheet"
 	"testgame/internal/utils"
@@ -14,11 +15,11 @@ import (
 )
 
 type Game struct {
-	Player            *entities.Player
+	Player            *entity.Player
 	PlayerSpriteSheet *spritesheet.SpriteSheet
 	AnimationFrame    int
-	Enemies           []*entities.Enemy
-	Consumables       []*entities.Consumable
+	Enemies           []*entity.Enemy
+	Consumables       []*entity.Consumable
 	Camera            *Camera
 	TilemapJSON       *mapper.TilemapJSON
 	TilemapIMG        *ebiten.Image
@@ -93,17 +94,17 @@ func (game *Game) Update() error {
 	}
 
 	game.Camera.FollowTarget(
-		game.Player.X+PIXEL_SCALE/2,
-		game.Player.Y+PIXEL_SCALE/2,
-		WINDOW_WIDTH,
-		WINDOW_HEIGHT,
+		game.Player.X+constant.PIXEL_SCALE/2,
+		game.Player.Y+constant.PIXEL_SCALE/2,
+		constant.WINDOW_WIDTH,
+		constant.WINDOW_HEIGHT,
 	)
 
 	game.Camera.Constrain(
-		float64(game.TilemapJSON.Layers[0].Width)*PIXEL_SCALE,
-		float64(game.TilemapJSON.Layers[0].Height)*PIXEL_SCALE,
-		WINDOW_WIDTH,
-		WINDOW_HEIGHT,
+		float64(game.TilemapJSON.Layers[0].Width)*constant.PIXEL_SCALE,
+		float64(game.TilemapJSON.Layers[0].Height)*constant.PIXEL_SCALE,
+		constant.WINDOW_WIDTH,
+		constant.WINDOW_HEIGHT,
 	)
 
 	return nil
@@ -123,13 +124,13 @@ func (game *Game) Draw(screen *ebiten.Image) {
 
 			x := index % layer.Width
 			y := index / layer.Width
-			x *= PIXEL_SCALE
-			y *= PIXEL_SCALE
+			x *= constant.PIXEL_SCALE
+			y *= constant.PIXEL_SCALE
 
-			img := game.Tilesets[layerIndex].Image(id, PIXEL_SCALE)
+			img := game.Tilesets[layerIndex].Image(id)
 
 			options.GeoM.Translate(float64(x), float64(y))
-			options.GeoM.Translate(0.0, -(float64(img.Bounds().Dy()) + PIXEL_SCALE))
+			options.GeoM.Translate(0.0, -(float64(img.Bounds().Dy()) + constant.PIXEL_SCALE))
 			options.GeoM.Translate(game.Camera.X, game.Camera.Y)
 			screen.DrawImage(img, &options)
 			options.GeoM.Reset()
@@ -143,7 +144,7 @@ func (game *Game) Draw(screen *ebiten.Image) {
 		options.GeoM.Translate(game.Camera.X, game.Camera.Y)
 		screen.DrawImage(
 			enemy.Img.SubImage(
-				image.Rect(0, 0, PIXEL_SCALE, PIXEL_SCALE),
+				image.Rect(0, 0, constant.PIXEL_SCALE, constant.PIXEL_SCALE),
 			).(*ebiten.Image), &options,
 		)
 		options.GeoM.Reset()
@@ -156,7 +157,7 @@ func (game *Game) Draw(screen *ebiten.Image) {
 		options.GeoM.Translate(game.Camera.X, game.Camera.Y)
 		screen.DrawImage(
 			consumable.Img.SubImage(
-				image.Rect(0, 0, PIXEL_SCALE, PIXEL_SCALE),
+				image.Rect(0, 0, constant.PIXEL_SCALE, constant.PIXEL_SCALE),
 			).(*ebiten.Image), &options,
 		)
 		options.GeoM.Reset()
@@ -194,5 +195,5 @@ func (game *Game) Draw(screen *ebiten.Image) {
 }
 
 func (game *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return WINDOW_WIDTH, WINDOW_HEIGHT
+	return constant.WINDOW_WIDTH, constant.WINDOW_HEIGHT
 }

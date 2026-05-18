@@ -30,17 +30,17 @@ func NewTilemapJSON(contents []byte) (*TilemapJSON, error) {
 	return &tilemapJSON, nil
 }
 
-func (t *TilemapJSON) GenTilesets() ([]Tileset, error) {
+func (t *TilemapJSON) GenTilesets() []Tileset {
 	tilesets := make([]Tileset, 0, len(t.Tilesets))
 
 	for _, tilesetData := range t.Tilesets {
 		tilesetPath := path.Join("maps", tilesetData.Source)
 		tileset, err := NewTileset(tilesetPath, tilesetData.FirstGID)
 		if err != nil {
-			return nil, err
+			panic(err)
 		}
 		tilesets = append(tilesets, tileset)
 	}
 
-	return tilesets, nil
+	return tilesets
 }

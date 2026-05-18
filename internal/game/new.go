@@ -1,12 +1,13 @@
-package internal
+package game
 
 import (
 	"image"
 	_ "image/png"
 	"log"
-	"testgame/internal/animations"
+	"testgame/internal/animation"
 	"testgame/internal/assets"
-	"testgame/internal/entities"
+	"testgame/internal/constant"
+	"testgame/internal/entity"
 	"testgame/internal/mapper"
 	"testgame/internal/spritesheet"
 
@@ -40,38 +41,32 @@ func loadIMAGE(path string) *ebiten.Image {
 	return ebiten.NewImageFromImage(img)
 }
 
-func LoadGame() *Game {
-
-	tilesets, err := loadJSON("maps/map1.json").GenTilesets()
-	if err != nil {
-		log.Fatal(err)
-	}
-
+func NewGame() *Game {
 	return &Game{
 		Camera:      NewCamera(0, 0),
 		TilemapJSON: loadJSON("maps/map1.json"),
 		TilemapIMG:  loadIMAGE("images/tileset_floor.png"),
-		Tilesets:    tilesets,
-		Player: &entities.Player{
-			Sprite: &entities.Sprite{
-				Scale: PIXEL_SCALE,
+		Tilesets:    loadJSON("maps/map1.json").GenTilesets(),
+		Player: &entity.Player{
+			Sprite: &entity.Sprite{
+				Scale: constant.PIXEL_SCALE,
 				Img:   loadIMAGE("images/darkninja.png"),
 				X:     500,
 				Y:     500,
 			},
 			Health: 10,
-			Animations: map[entities.PlayerState]*animations.Animation{
-				entities.Down:  animations.NewAnimation(4, 12, 4, 20),
-				entities.Up:    animations.NewAnimation(5, 13, 4, 20),
-				entities.Left:  animations.NewAnimation(6, 14, 4, 20),
-				entities.Right: animations.NewAnimation(7, 15, 4, 20),
+			Animations: map[entity.PlayerState]*animation.Animation{
+				entity.Down:  animation.NewAnimation(4, 12, 4, 20),
+				entity.Up:    animation.NewAnimation(5, 13, 4, 20),
+				entity.Left:  animation.NewAnimation(6, 14, 4, 20),
+				entity.Right: animation.NewAnimation(7, 15, 4, 20),
 			},
 		},
 		PlayerSpriteSheet: spritesheet.NewSpriteSheet(4, 7, 16),
-		Consumables: []*entities.Consumable{
+		Consumables: []*entity.Consumable{
 			{
-				Sprite: &entities.Sprite{
-					Scale: PIXEL_SCALE,
+				Sprite: &entity.Sprite{
+					Scale: constant.PIXEL_SCALE,
 					Img:   loadIMAGE("images/heart.png"),
 					X:     60,
 					Y:     60,
@@ -80,10 +75,10 @@ func LoadGame() *Game {
 				Amount: 20,
 			},
 		},
-		Enemies: []*entities.Enemy{
+		Enemies: []*entity.Enemy{
 			{
-				Sprite: &entities.Sprite{
-					Scale: PIXEL_SCALE,
+				Sprite: &entity.Sprite{
+					Scale: constant.PIXEL_SCALE,
 					Img:   loadIMAGE("images/skeleton.png"),
 					X:     10,
 					Y:     10,
@@ -91,16 +86,16 @@ func LoadGame() *Game {
 				Following: true,
 			},
 			{
-				Sprite: &entities.Sprite{
-					Scale: PIXEL_SCALE,
+				Sprite: &entity.Sprite{
+					Scale: constant.PIXEL_SCALE,
 					Img:   loadIMAGE("images/skeleton.png"),
 					X:     30,
 					Y:     30,
 				},
 			},
 			{
-				Sprite: &entities.Sprite{
-					Scale: PIXEL_SCALE,
+				Sprite: &entity.Sprite{
+					Scale: constant.PIXEL_SCALE,
 					Img:   loadIMAGE("images/skeleton.png"),
 					X:     70,
 					Y:     70,

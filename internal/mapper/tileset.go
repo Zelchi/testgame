@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"image"
 	"testgame/internal/assets"
+	"testgame/internal/constant"
 	"testgame/internal/utils"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type Tileset interface {
-	Image(id, pixel_scale int) *ebiten.Image
+	Image(id int) *ebiten.Image
 }
 
 type UniformTilesetJSON struct {
@@ -23,18 +24,18 @@ type UniformTileset struct {
 	GID int
 }
 
-func (u *UniformTileset) Image(id, pixel_scale int) *ebiten.Image {
+func (u *UniformTileset) Image(id int) *ebiten.Image {
 	id -= u.GID
 
 	srcX := id % 22
 	srcY := id / 22
 
-	srcX *= pixel_scale
-	srcY *= pixel_scale
+	srcX *= constant.PIXEL_SCALE
+	srcY *= constant.PIXEL_SCALE
 
 	return u.IMG.SubImage(
 		image.Rect(
-			srcX, srcY, srcX+pixel_scale, srcY+pixel_scale,
+			srcX, srcY, srcX+constant.PIXEL_SCALE, srcY+constant.PIXEL_SCALE,
 		),
 	).(*ebiten.Image)
 }
@@ -56,7 +57,7 @@ type DynTileset struct {
 	GID  int
 }
 
-func (d *DynTileset) Image(id, pixel_scale int) *ebiten.Image {
+func (d *DynTileset) Image(id int) *ebiten.Image {
 	id -= d.GID
 	return d.IMGS[id]
 }

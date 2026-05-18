@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"testgame/internal"
+	"testgame/internal/game"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -15,7 +15,7 @@ func main() {
 	ebiten.SetVsyncEnabled(true)
 	ebiten.SetScreenClearedEveryFrame(true)
 	ebiten.SetRunnableOnUnfocused(true)
-	Game := internal.LoadGame()
+	Game := game.NewGame()
 	if err := ebiten.RunGame(Game); err != nil {
 		log.Fatal(err)
 	}

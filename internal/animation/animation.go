@@ -1,4 +1,4 @@
-package animations
+package animation
 
 type Animation struct {
 	First   int

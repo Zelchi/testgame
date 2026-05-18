@@ -2,10 +2,10 @@ package utils
 
 import (
 	"image"
-	"testgame/internal/entities"
+	"testgame/internal/entity"
 )
 
-func CheckCollisionHorizontal(sprite *entities.Sprite, colliders []image.Rectangle) {
+func CheckCollisionHorizontal(sprite *entity.Sprite, colliders []image.Rectangle) {
 	for _, collider := range colliders {
 		if collider.Overlaps(image.Rect(
 			int(sprite.X),
@@ -22,7 +22,7 @@ func CheckCollisionHorizontal(sprite *entities.Sprite, colliders []image.Rectang
 	}
 }
 
-func CheckCollisionVertical(sprite *entities.Sprite, colliders []image.Rectangle) {
+func CheckCollisionVertical(sprite *entity.Sprite, colliders []image.Rectangle) {
 	for _, collider := range colliders {
 		if collider.Overlaps(image.Rect(
 			int(sprite.X),

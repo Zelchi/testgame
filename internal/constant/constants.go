@@ -1,4 +1,4 @@
-package internal
+package constant
 
 const (
 	WINDOW_WIDTH  = 340

@@ -1,6 +1,8 @@
-package entities
+package entity
 
-import "testgame/internal/animations"
+import (
+	"testgame/internal/animation"
+)
 
 type PlayerState uint8
 
@@ -16,10 +18,10 @@ type Player struct {
 	Health         uint
 	Dashing        bool
 	CanAttackEnemy bool
-	Animations     map[PlayerState]*animations.Animation
+	Animations     map[PlayerState]*animation.Animation
 }
 
-func (player *Player) ActiveAnimation(deltaX, deltaY float64) *animations.Animation {
+func (player *Player) ActiveAnimation(deltaX, deltaY float64) *animation.Animation {
 	if deltaX > 0 {
 		return player.Animations[Right]
 	}
