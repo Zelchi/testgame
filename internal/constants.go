@@ -1,7 +1,7 @@
 package internal
 
 const (
-	WINDOW_WIDTH  = 320
-	WINDOW_HEIGHT = 240
+	WINDOW_WIDTH  = 340
+	WINDOW_HEIGHT = 260
 	PIXEL_SCALE   = 16
 )

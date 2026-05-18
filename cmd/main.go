@@ -8,11 +8,13 @@ import (
 )
 
 func main() {
-	ebiten.SetWindowSize(640, 480)
-	ebiten.SetWindowTitle("Hello, World!")
-	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
-	ebiten.SetVsyncEnabled(true)
 	ebiten.SetTPS(60)
+	ebiten.SetWindowSize(640, 480)
+	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
+	ebiten.SetWindowTitle("Test Game")
+	ebiten.SetVsyncEnabled(true)
+	ebiten.SetScreenClearedEveryFrame(true)
+	ebiten.SetRunnableOnUnfocused(true)
 	Game := internal.LoadGame()
 	if err := ebiten.RunGame(Game); err != nil {
 		log.Fatal(err)

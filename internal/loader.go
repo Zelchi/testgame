@@ -4,9 +4,11 @@ import (
 	"image"
 	_ "image/png"
 	"log"
+	"testgame/internal/animations"
 	"testgame/internal/assets"
 	"testgame/internal/entities"
 	"testgame/internal/mapper"
+	"testgame/internal/spritesheet"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -52,18 +54,27 @@ func LoadGame() *Game {
 		Tilesets:    tilesets,
 		Player: &entities.Player{
 			Sprite: &entities.Sprite{
-				Img: loadIMAGE("images/darkninja.png"),
-				X:   500,
-				Y:   500,
+				Scale: PIXEL_SCALE,
+				Img:   loadIMAGE("images/darkninja.png"),
+				X:     500,
+				Y:     500,
 			},
 			Health: 10,
+			Animations: map[entities.PlayerState]*animations.Animation{
+				entities.Down:  animations.NewAnimation(4, 12, 4, 20),
+				entities.Up:    animations.NewAnimation(5, 13, 4, 20),
+				entities.Left:  animations.NewAnimation(6, 14, 4, 20),
+				entities.Right: animations.NewAnimation(7, 15, 4, 20),
+			},
 		},
+		PlayerSpriteSheet: spritesheet.NewSpriteSheet(4, 7, 16),
 		Consumables: []*entities.Consumable{
 			{
 				Sprite: &entities.Sprite{
-					Img: loadIMAGE("images/heart.png"),
-					X:   60,
-					Y:   60,
+					Scale: PIXEL_SCALE,
+					Img:   loadIMAGE("images/heart.png"),
+					X:     60,
+					Y:     60,
 				},
 				Type:   "health",
 				Amount: 20,
@@ -72,26 +83,32 @@ func LoadGame() *Game {
 		Enemies: []*entities.Enemy{
 			{
 				Sprite: &entities.Sprite{
-					Img: loadIMAGE("images/skeleton.png"),
-					X:   10,
-					Y:   10,
+					Scale: PIXEL_SCALE,
+					Img:   loadIMAGE("images/skeleton.png"),
+					X:     10,
+					Y:     10,
 				},
 				Following: true,
 			},
 			{
 				Sprite: &entities.Sprite{
-					Img: loadIMAGE("images/skeleton.png"),
-					X:   30,
-					Y:   30,
+					Scale: PIXEL_SCALE,
+					Img:   loadIMAGE("images/skeleton.png"),
+					X:     30,
+					Y:     30,
 				},
 			},
 			{
 				Sprite: &entities.Sprite{
-					Img: loadIMAGE("images/skeleton.png"),
-					X:   70,
-					Y:   70,
+					Scale: PIXEL_SCALE,
+					Img:   loadIMAGE("images/skeleton.png"),
+					X:     70,
+					Y:     70,
 				},
 			},
+		},
+		Colliders: []image.Rectangle{
+			image.Rect(100, 100, 116, 116),
 		},
 	}
 }
