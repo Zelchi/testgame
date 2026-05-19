@@ -2,6 +2,7 @@ package entity
 
 import (
 	"testgame/internal/animation"
+	"testgame/internal/components"
 )
 
 type PlayerState uint8
@@ -19,6 +20,7 @@ type Player struct {
 	Dashing        bool
 	CanAttackEnemy bool
 	Animations     map[PlayerState]*animation.Animation
+	Combat         *components.BasicCombat
 }
 
 func (player *Player) ActiveAnimation(deltaX, deltaY float64) *animation.Animation {

@@ -1,6 +1,9 @@
 package game
 
-import "math"
+import (
+	"math"
+	"testgame/internal/constant"
+)
 
 type Camera struct {
 	X, Y float64
@@ -17,7 +20,7 @@ func (camera *Camera) FollowTarget(targetX, targetY, screenWidth, screenHeight f
 
 func (camera *Camera) Constrain(tilemapWidth, tilemapHeight, screenWidth, screenHeight float64) {
 	camera.X = math.Min(camera.X, 0.0)
-	camera.Y = math.Min(camera.Y, 32)
+	camera.Y = math.Min(camera.Y, constant.TILESIZE*2)
 
 	camera.X = math.Max(camera.X, screenWidth-tilemapWidth)
 	camera.Y = math.Max(camera.Y, screenHeight-tilemapHeight)

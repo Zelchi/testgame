@@ -30,12 +30,12 @@ func (u *UniformTileset) Image(id int) *ebiten.Image {
 	srcX := id % 22
 	srcY := id / 22
 
-	srcX *= constant.PIXEL_SCALE
-	srcY *= constant.PIXEL_SCALE
+	srcX *= constant.TILESIZE
+	srcY *= constant.TILESIZE
 
 	return u.IMG.SubImage(
 		image.Rect(
-			srcX, srcY, srcX+constant.PIXEL_SCALE, srcY+constant.PIXEL_SCALE,
+			srcX, srcY, srcX+constant.TILESIZE, srcY+constant.TILESIZE,
 		),
 	).(*ebiten.Image)
 }
@@ -47,17 +47,17 @@ type TileJSON struct {
 	Height int    `json:"imageheight"`
 }
 
-type DynTilesetJSON struct {
+type DynamicTilesetJSON struct {
 	Tiles []TileJSON `json:"tiles"`
 	gid   int
 }
 
-type DynTileset struct {
+type DynamicTileset struct {
 	IMGS []*ebiten.Image
 	GID  int
 }
 
-func (d *DynTileset) Image(id int) *ebiten.Image {
+func (d *DynamicTileset) Image(id int) *ebiten.Image {
 	id -= d.GID
 	return d.IMGS[id]
 }
@@ -83,27 +83,27 @@ func NewTileset(pathToTileset string, gid int) (Tileset, error) {
 		return nil, err
 	}
 
-	var dynTilesetJSON DynTilesetJSON
-	if err := json.Unmarshal(contents, &dynTilesetJSON); err != nil {
+	var DynamicTilesetJSON DynamicTilesetJSON
+	if err := json.Unmarshal(contents, &DynamicTilesetJSON); err != nil {
 		return nil, err
 	}
 
-	if len(dynTilesetJSON.Tiles) > 0 {
-		dynTileset := DynTileset{
+	if len(DynamicTilesetJSON.Tiles) > 0 {
+		DynamicTileset := DynamicTileset{
 			GID:  gid,
-			IMGS: make([]*ebiten.Image, 0, len(dynTilesetJSON.Tiles)),
+			IMGS: make([]*ebiten.Image, 0, len(DynamicTilesetJSON.Tiles)),
 		}
 
-		for _, tileJSON := range dynTilesetJSON.Tiles {
+		for _, tileJSON := range DynamicTilesetJSON.Tiles {
 			imgPath := utils.ResolveEmbeddedPath(pathToTileset, tileJSON.Path)
 			img, err := loadEmbeddedImage(imgPath)
 			if err != nil {
 				return nil, err
 			}
-			dynTileset.IMGS = append(dynTileset.IMGS, img)
+			DynamicTileset.IMGS = append(DynamicTileset.IMGS, img)
 		}
 
-		return &dynTileset, nil
+		return &DynamicTileset, nil
 	}
 
 	var uniformTilesetJSON UniformTilesetJSON
