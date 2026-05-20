@@ -49,9 +49,9 @@ func NewGame() *Game {
 		Tilesets:    loadJSON("maps/map1.json").GenTilesets(),
 		Player: &entity.Player{
 			Sprite: &entity.Sprite{
-				Img: loadIMAGE("images/darkninja.png"),
-				X:   500,
-				Y:   500,
+				Texture: loadIMAGE("images/darkninja.png"),
+				X:       500,
+				Y:       500,
 			},
 			Health: 10,
 			Animations: map[entity.PlayerState]*animation.Animation{
@@ -66,9 +66,9 @@ func NewGame() *Game {
 		Consumables: []*entity.Consumable{
 			{
 				Sprite: &entity.Sprite{
-					Img: loadIMAGE("images/heart.png"),
-					X:   60,
-					Y:   60,
+					Texture: loadIMAGE("images/heart.png"),
+					X:       60,
+					Y:       60,
 				},
 				Type:   "health",
 				Amount: 20,
@@ -77,26 +77,26 @@ func NewGame() *Game {
 		Enemies: []*entity.Enemy{
 			{
 				Sprite: &entity.Sprite{
-					Img: loadIMAGE("images/skeleton.png"),
-					X:   10,
-					Y:   10,
+					Texture: loadIMAGE("images/skeleton.png"),
+					X:       10,
+					Y:       10,
 				},
 				Following: true,
 				Combat:    components.NewEnemyCombat(3, 1, 30),
 			},
 			{
 				Sprite: &entity.Sprite{
-					Img: loadIMAGE("images/skeleton.png"),
-					X:   30,
-					Y:   30,
+					Texture: loadIMAGE("images/skeleton.png"),
+					X:       30,
+					Y:       30,
 				},
 				Combat: components.NewEnemyCombat(3, 1, 30),
 			},
 			{
 				Sprite: &entity.Sprite{
-					Img: loadIMAGE("images/skeleton.png"),
-					X:   70,
-					Y:   70,
+					Texture: loadIMAGE("images/skeleton.png"),
+					X:       70,
+					Y:       70,
 				},
 				Combat: components.NewEnemyCombat(3, 1, 30),
 			},

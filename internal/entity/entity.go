@@ -3,7 +3,7 @@ package entity
 import "github.com/hajimehoshi/ebiten/v2"
 
 type Sprite struct {
-	Img            *ebiten.Image
+	Texture        *ebiten.Image
 	X, Y           float64
 	DeltaX, DeltaY float64
 }

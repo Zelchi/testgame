@@ -77,15 +77,15 @@ func (game *Game) Update() error {
 		enemy.Y += enemy.DeltaY
 		utils.CheckCollisionVertical(enemy.Sprite, game.Colliders)
 
-		activeAnimation := game.Player.ActiveAnimation(game.Player.DeltaX, game.Player.DeltaY)
-		if activeAnimation != nil {
-			activeAnimation.Update()
-		}
-
 		if enemy.X == game.Player.X && enemy.Y == game.Player.Y {
 			game.Player.Health -= 1
 			fmt.Printf("Player hit! Health: %d\n", game.Player.Health)
 		}
+	}
+
+	activeAnimation := game.Player.ActiveAnimation(game.Player.DeltaX, game.Player.DeltaY)
+	if activeAnimation != nil {
+		activeAnimation.Update()
 	}
 
 	clicked := inpututil.IsMouseButtonJustPressed(ebiten.MouseButton0)
@@ -143,6 +143,7 @@ func (game *Game) Update() error {
 			}
 		}
 	}
+
 	if len(deadEnemies) > 0 {
 		newEnemies := make([]*entity.Enemy, 0)
 		for index, enemy := range game.Enemies {
@@ -210,7 +211,7 @@ func (game *Game) Draw(screen *ebiten.Image) {
 		options.GeoM.Translate(enemy.X, enemy.Y)
 		options.GeoM.Translate(game.Camera.X, game.Camera.Y)
 		screen.DrawImage(
-			enemy.Img.SubImage(
+			enemy.Texture.SubImage(
 				image.Rect(0, 0, constant.TILESIZE, constant.TILESIZE),
 			).(*ebiten.Image), &options,
 		)
@@ -223,7 +224,7 @@ func (game *Game) Draw(screen *ebiten.Image) {
 		options.GeoM.Translate(consumable.X, consumable.Y)
 		options.GeoM.Translate(game.Camera.X, game.Camera.Y)
 		screen.DrawImage(
-			consumable.Img.SubImage(
+			consumable.Texture.SubImage(
 				image.Rect(0, 0, constant.TILESIZE, constant.TILESIZE),
 			).(*ebiten.Image), &options,
 		)
@@ -240,7 +241,7 @@ func (game *Game) Draw(screen *ebiten.Image) {
 	options.GeoM.Translate(game.Player.X, game.Player.Y)
 	options.GeoM.Translate(game.Camera.X, game.Camera.Y)
 	screen.DrawImage(
-		game.Player.Img.SubImage(
+		game.Player.Texture.SubImage(
 			game.PlayerSpriteSheet.Rect(playerFrame),
 		).(*ebiten.Image), &options,
 	)
